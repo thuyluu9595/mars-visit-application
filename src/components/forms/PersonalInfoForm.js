@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { personalInfoValidationSchema} from "@/utils/validationSchema";
 
 const PersonalInfoForm = ({ initialValues, onNext }) => {
     const validationSchema = Yup.object({
@@ -14,7 +15,7 @@ const PersonalInfoForm = ({ initialValues, onNext }) => {
     return (
         <Formik
             initialValues={initialValues}
-            validationSchema={validationSchema}
+            validationSchema={personalInfoValidationSchema}
             onSubmit={(values) => {
                 onNext(values);
             }}

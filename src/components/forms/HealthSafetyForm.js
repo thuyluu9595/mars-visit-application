@@ -1,6 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { healthSafetyValidationSchema } from "@/utils/validationSchema";
+import NavigationButtons from "@/components/NavigationButtons";
 
 const HealthSafetyForm = ({ initialValues, onNext, onPrevious }) => {
     const validationSchema = Yup.object({
@@ -12,7 +14,7 @@ const HealthSafetyForm = ({ initialValues, onNext, onPrevious }) => {
     return (
         <Formik
             initialValues={initialValues}
-            validationSchema={validationSchema}
+            validationSchema={healthSafetyValidationSchema}
             onSubmit={(values) => {
                 onNext(values);
             }}
@@ -38,12 +40,7 @@ const HealthSafetyForm = ({ initialValues, onNext, onPrevious }) => {
                         <Field as="textarea" name="medicalConditions" />
                         <ErrorMessage name="medicalConditions" component="div" />
                     </div>
-                    <button type="button" onClick={onPrevious}>
-                        Previous
-                    </button>
-                    <button type="submit" disabled={isSubmitting}>
-                        Submit
-                    </button>
+                    <NavigationButtons onPrevious={onPrevious} isSubmitting={isSubmitting} isLastStage />
                 </Form>
             )}
         </Formik>
