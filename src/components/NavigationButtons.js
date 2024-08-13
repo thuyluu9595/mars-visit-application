@@ -1,15 +1,15 @@
 import React from 'react';
 
-const NavigationButtons = ({ onPrevious, isSubmitting, isLastStage = false }) => {
+const NavigationButtons = ({ step, prevStep, isLastStep, isSubmitting }) => {
     return (
-        <div className="navigation-buttons">
-            {onPrevious && (
-                <button type="button" onClick={onPrevious}>
+        <div>
+            {step > 1 && (
+                <button type="button" onClick={prevStep}>
                     Previous
                 </button>
             )}
             <button type="submit" disabled={isSubmitting}>
-                {isLastStage ? 'Submit' : 'Next'}
+                {isLastStep ? 'Submit' : 'Next'}
             </button>
         </div>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
-import Home from './Home'; // Import the Home component
+import ApplicationForm from "@/pages/ApplicationForm"; // Import the Home component
 
 export default function Index() {
-    return <Home />;
+    return <ApplicationForm />;
 }
