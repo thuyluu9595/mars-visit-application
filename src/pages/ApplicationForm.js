@@ -1,80 +1,96 @@
-// import React, { useState } from 'react';
-// import { useRouter } from 'next/router';
-// import PersonalInfoForm from '../components/forms/PersonalInfoForm';
-// import TravelPreferencesForm from '../components/forms/TravelPreferencesForm';
-// import HealthSafetyForm from '../components/forms/HealthSafetyForm';
-// import ProgressIndicator from '../components/ProgressIndicator';
-//
-// const ApplicationForm = () => {
-//     const [currentStage, setCurrentStage] = useState(0);
-//     const [formData, setFormData] = useState({
-//         fullName: '',
-//         dateOfBirth: '',
-//         nationality: '',
-//         email: '',
-//         phone: '',
-//         departureDate: '',
-//         returnDate: '',
-//         accommodation: '',
-//         specialRequests: '',
-//         healthDeclaration: '',
-//         emergencyContact: '',
-//         medicalConditions: '',
-//     });
-//
-//     const router = useRouter();
-//
-//     const handleNext = (newData) => {
-//         setFormData((prev) => ({ ...prev, ...newData }));
-//         setCurrentStage((prev) => prev + 1);
-//     };
-//
-//     const handlePrevious = () => {
-//         setCurrentStage((prev) => prev - 1);
-//     };
-//
-//     const handleSubmit = (finalData) => {
-//         setFormData((prev) => ({ ...prev, ...finalData }));
-//         router.push('/success');
-//     };
-//
-//     const stages = [
-//         <PersonalInfoForm initialValues={formData} onNext={handleNext} />,
-//         <TravelPreferencesForm initialValues={formData} onNext={handleNext} onPrevious={handlePrevious} />,
-//         <HealthSafetyForm initialValues={formData} onNext={handleSubmit} onPrevious={handlePrevious} />,
-//     ];
-//
-//     return (
-//         <div>
-//             <ProgressIndicator currentStage={currentStage} totalStages={stages.length} />
-//             {stages[currentStage]}
-//         </div>
-//     );
-// };
-//
-// export default ApplicationForm;
 import React, { useState } from 'react';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 import PersonalInfoForm from '../components/forms/PersonalInfoForm';
 import TravelPreferencesForm from '../components/forms/TravelPreferencesForm';
 import HealthSafetyForm from '../components/forms/HealthSafetyForm';
 import NavigationButtons from '../components/NavigationButtons';
 import ProgressIndicator from '../components/ProgressIndicator';
+import { useRouter } from 'next/router';
+
+// Validation schema for each step
+const validationSchema = [
+    Yup.object({
+        fullName: Yup.string().required('Full Name is required'),
+        dateOfBirth: Yup.date().required('Date of Birth is required'),
+        nationality: Yup.string().required('Nationality is required'),
+        email: Yup.string().email('Invalid email format').required('Email is required'),
+        phone: Yup.string().required('Phone number is required'),
+    }),
+    Yup.object({
+        departureDate: Yup.date().required('Departure Date is required'),
+        returnDate: Yup.date().required('Return Date is required'),
+        accommodation: Yup.string().required('Accommodation Preference is required'),
+        specialRequests: Yup.string(),
+    }),
+    Yup.object({
+        healthDeclaration: Yup.boolean().required('Health Declaration is required'),
+        emergencyContact: Yup.string().when('healthDeclaration', {
+            is: true,
+            then: Yup.string().required('Emergency Contact is required'),
+        }),
+        medicalConditions: Yup.string(),
+    }),
+];
+
+// Initial values for the form
+const initialValues = {
+    fullName: '',
+    dateOfBirth: '',
+    nationality: '',
+    email: '',
+    phone: '',
+    departureDate: '',
+    returnDate: '',
+    accommodation: '',
+    specialRequests: '',
+    healthDeclaration: false,
+    emergencyContact: '',
+    medicalConditions: '',
+};
 
 export default function ApplicationForm() {
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(0); // Start at step 0 for array index
+    const router = useRouter();
 
-    const nextStep = () => setStep(step + 1);
-    const prevStep = () => setStep(step - 1);
+    const isLastStep = step === validationSchema.length - 1;
+
+    const nextStep = () => setStep((prev) => Math.min(prev + 1, validationSchema.length - 1));
+    const prevStep = () => setStep((prev) => Math.max(prev - 1, 0));
+
+    const handleSubmit = (values, actions) => {
+        if (isLastStep) {
+            // Final submission logic
+            console.log('Submitting', values);
+            actions.setSubmitting(false);
+            router.push('/success'); // Redirect to success page
+        } else {
+            nextStep();
+            actions.setTouched({}); // Reset touched fields for the next step
+            actions.setSubmitting(false);
+        }
+    };
 
     return (
-        <div>
-            <h1>Mars Visit Application</h1>
-            <ProgressIndicator step={step} />
-            {step === 1 && <PersonalInfoForm />}
-            {step === 2 && <TravelPreferencesForm />}
-            {step === 3 && <HealthSafetyForm />}
-            <NavigationButtons step={step} nextStep={nextStep} prevStep={prevStep} />
-        </div>
+        <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema[step]}
+            onSubmit={handleSubmit}
+        >
+            {({ isSubmitting }) => (
+                <Form>
+                    <ProgressIndicator step={step + 1} totalSteps={validationSchema.length} />
+                    {step === 0 && <PersonalInfoForm isSubmitting={isSubmitting}/>}
+                    {step === 1 && <TravelPreferencesForm />}
+                    {step === 2 && <HealthSafetyForm />}
+                    <NavigationButtons
+                        step={step}
+                        prevStep={prevStep}
+                        isLastStep={isLastStep}
+                        isSubmitting={isSubmitting}
+                    />
+                </Form>
+            )}
+        </Formik>
     );
 }
-
