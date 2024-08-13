@@ -1,12 +1,11 @@
 import React from 'react';
+import SuccessMessage from '../components/SuccessMessage';
 
-const Success = () => {
+export default function Success() {
     return (
-        <div className="success-page">
-            <h2>Application Submitted Successfully!</h2>
-            <p>We have received your application for the Mars visit. Our team will get in touch with you shortly.</p>
+        <div>
+            <h1>Application Submitted Successfully!</h1>
+            <SuccessMessage />
         </div>
     );
-};
-
-export default Success;
+}
