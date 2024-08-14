@@ -1,49 +1,33 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { healthSafetyValidationSchema } from "@/utils/validationSchema";
-import NavigationButtons from "@/components/NavigationButtons";
+import { Field, ErrorMessage } from 'formik';
 
-const HealthSafetyForm = ({ initialValues, onNext, onPrevious }) => {
-    const validationSchema = Yup.object({
-        healthDeclaration: Yup.boolean().required('Health Declaration is required'),
-        emergencyContact: Yup.string().required('Emergency Contact Information is required'),
-        medicalConditions: Yup.string(),
-    });
-
+const HealthSafetyForm = () => {
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={healthSafetyValidationSchema}
-            onSubmit={(values) => {
-                onNext(values);
-            }}
-        >
-            {({ isSubmitting }) => (
-                <Form>
-                    <div>
-                        <label htmlFor="healthDeclaration">Health Declaration</label>
-                        <Field as="select" name="healthDeclaration">
+        <div className="space-y-9">
+            <div className="border-b border-gray-900/10 pb-12">
+                <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div className="col-span-full">
+                        <label htmlFor="healthDeclaration" className="block text-sm font-medium leading-6 text-gray-900">Health Declaration</label>
+                        <Field as="select" name="healthDeclaration" className="px-4 py-2 border rounded-md">
                             <option value="">Select</option>
-                            <option value={true}>Yes</option>
-                            <option value={false}>No</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
                         </Field>
-                        <ErrorMessage name="healthDeclaration" component="div" />
+                        <ErrorMessage name="healthDeclaration" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
-                    <div>
-                        <label htmlFor="emergencyContact">Emergency Contact Information</label>
-                        <Field type="text" name="emergencyContact" />
-                        <ErrorMessage name="emergencyContact" component="div" />
+                    <div className="col-span-full">
+                        <label htmlFor="emergencyContact" className="block text-sm font-medium leading-6 text-gray-900">Emergency Contact Information</label>
+                        <Field type="text" name="emergencyContact" className="px-4 py-2 border rounded-md" />
+                        <ErrorMessage name="emergencyContact" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
-                    <div>
-                        <label htmlFor="medicalConditions">Any Medical Conditions (if applicable)</label>
-                        <Field as="textarea" name="medicalConditions" />
-                        <ErrorMessage name="medicalConditions" component="div" />
+                    <div className="col-span-full">
+                        <label htmlFor="medicalConditions" className="block text-sm font-medium leading-6 text-gray-900">Any Medical Conditions (if applicable)</label>
+                        <Field as="textarea" name="medicalConditions" className="px-4 py-2 border rounded-md" />
+                        <ErrorMessage name="medicalConditions" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
-                    <NavigationButtons onPrevious={onPrevious} isSubmitting={isSubmitting} isLastStage />
-                </Form>
-            )}
-        </Formik>
+                </div>
+            </div>
+        </div>
     );
 };
 

@@ -1,59 +1,38 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { travelPreferencesValidationSchema } from "@/utils/validationSchema";
+import { Field, ErrorMessage } from 'formik';
 
-const TravelPreferencesForm = ({ initialValues, onNext, onPrevious }) => {
-    const validationSchema = Yup.object({
-        departureDate: Yup.date().required('Departure Date is required'),
-        returnDate: Yup.date().required('Return Date is required'),
-        accommodation: Yup.string().required('Accommodation Preference is required'),
-        specialRequests: Yup.string(),
-    });
-
+const TravelPreferencesForm = () => {
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={travelPreferencesValidationSchema}
-            onSubmit={(values) => {
-                onNext(values);
-            }}
-        >
-            {({ isSubmitting }) => (
-                <Form>
-                    <div>
-                        <label htmlFor="departureDate">Departure Date</label>
-                        <Field type="date" name="departureDate" />
-                        <ErrorMessage name="departureDate" component="div" />
+        <div className="space-y-9">
+            <div className="border-b border-gray-900/10 pb-12">
+                <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div className="col-span-full">
+                        <label htmlFor="departureDate" className="block text-sm font-medium leading-6 text-gray-900">Departure Date</label>
+                        <Field type="date" name="departureDate" className="px-4 py-2 border rounded-md" />
+                        <ErrorMessage name="departureDate" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
-                    <div>
-                        <label htmlFor="returnDate">Return Date</label>
-                        <Field type="date" name="returnDate" />
-                        <ErrorMessage name="returnDate" component="div" />
+                    <div className="col-span-full">
+                        <label htmlFor="returnDate" className="block text-sm font-medium leading-6 text-gray-900">Return Date</label>
+                        <Field type="date" name="returnDate" className="px-4 py-2 border rounded-md" />
+                        <ErrorMessage name="returnDate" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
-                    <div>
-                        <label htmlFor="accommodation">Accommodation Preference</label>
-                        <Field as="select" name="accommodation">
+                    <div className="col-span-full">
+                        <label htmlFor="accommodation" className="block text-sm font-medium leading-6 text-gray-900">Accommodation Preference</label>
+                        <Field as="select" name="accommodation" className="px-4 py-2 border rounded-md">
                             <option value="">Select</option>
                             <option value="spaceHotel">Space Hotel</option>
                             <option value="martianBase">Martian Base</option>
                         </Field>
-                        <ErrorMessage name="accommodation" component="div" />
+                        <ErrorMessage name="accommodation" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
-                    <div>
-                        <label htmlFor="specialRequests">Special Requests or Preferences</label>
-                        <Field as="textarea" name="specialRequests" />
-                        <ErrorMessage name="specialRequests" component="div" />
+                    <div className="col-span-full">
+                        <label htmlFor="specialRequests" className="block text-sm font-medium leading-6 text-gray-900">Special Requests or Preferences</label>
+                        <Field as="textarea" name="specialRequests" className="px-4 py-2 border rounded-md" />
+                        <ErrorMessage name="specialRequests" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
-                    <button type="button" onClick={onPrevious}>
-                        Previous
-                    </button>
-                    <button type="submit" disabled={isSubmitting}>
-                        Next
-                    </button>
-                </Form>
-            )}
-        </Formik>
+                </div>
+            </div>
+        </div>
     );
 };
 

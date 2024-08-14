@@ -1,5 +1,5 @@
 import React from 'react';
-import './ProgressIndicator.css'; // Assuming you're adding custom styles
+import './ProgressIndicator.css';
 
 const ProgressIndicator = ({ currentStage, totalStages }) => {
     return (
@@ -7,9 +7,9 @@ const ProgressIndicator = ({ currentStage, totalStages }) => {
             {Array.from({ length: totalStages }, (_, index) => (
                 <div
                     key={index}
-                    className={`progress-step ${index <= currentStage ? 'active' : ''}`}
+                    className={`progress-step ${index+1 <= currentStage ? 'active' : ''}`}
                 >
-                    {index + 1}
+                    {index+1}
                 </div>
             ))}
         </div>

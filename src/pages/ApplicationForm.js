@@ -24,7 +24,7 @@ const validationSchema = [
         specialRequests: Yup.string(),
     }),
     Yup.object({
-        healthDeclaration: Yup.boolean().required('Health Declaration is required'),
+        healthDeclaration: Yup.string().required('Health Declaration is required'),
         emergencyContact: Yup.string().when('healthDeclaration', {
             is: true,
             then: Yup.string().required('Emergency Contact is required'),
@@ -44,13 +44,13 @@ const initialValues = {
     returnDate: '',
     accommodation: '',
     specialRequests: '',
-    healthDeclaration: false,
+    healthDeclaration: '',
     emergencyContact: '',
     medicalConditions: '',
 };
 
 export default function ApplicationForm() {
-    const [step, setStep] = useState(0); // Start at step 0 for array index
+    const [step, setStep] = useState(0);
     const router = useRouter();
 
     const isLastStep = step === validationSchema.length - 1;
@@ -60,13 +60,12 @@ export default function ApplicationForm() {
 
     const handleSubmit = (values, actions) => {
         if (isLastStep) {
-            // Final submission logic
             console.log('Submitting', values);
-            actions.setSubmitting(false);
+            actions.setSubmitting(true);
             router.push('/success'); // Redirect to success page
         } else {
             nextStep();
-            actions.setTouched({}); // Reset touched fields for the next step
+            actions.setTouched({});
             actions.setSubmitting(false);
         }
     };
@@ -79,7 +78,7 @@ export default function ApplicationForm() {
         >
             {({ isSubmitting }) => (
                 <Form>
-                    <ProgressIndicator step={step + 1} totalSteps={validationSchema.length} />
+                    <ProgressIndicator currentStage={step + 1} totalStages={validationSchema.length} />
                     {step === 0 && <PersonalInfoForm isSubmitting={isSubmitting}/>}
                     {step === 1 && <TravelPreferencesForm />}
                     {step === 2 && <HealthSafetyForm />}

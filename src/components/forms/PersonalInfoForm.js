@@ -1,8 +1,15 @@
 import React from 'react';
 import { Field, ErrorMessage } from 'formik';
-import { personalInfoValidationSchema } from '@/utils/validationSchema'; // Assuming you have a separate schema
 
-const PersonalInfoForm = (isSubmitting) => {
+const countries = [
+    "United States", "Canada", "United Kingdom", "Australia", "Germany",
+    "France", "India", "China", "Japan", "Brazil", "Mexico", "Russia",
+    "South Africa", "Italy", "Spain", "Netherlands", "Sweden", "Switzerland",
+    "Norway", "New Zealand", "Argentina", "Chile", "South Korea", "Nigeria"
+
+];
+
+const PersonalInfoForm = ({ isSubmitting }) => {
     return (
         <div className="space-y-9">
             <div className="border-b border-gray-900/10 pb-12">
@@ -19,7 +26,14 @@ const PersonalInfoForm = (isSubmitting) => {
                     </div>
                     <div className="col-span-full">
                         <label htmlFor="nationality" className="block text-sm font-medium leading-6 text-gray-900">Nationality</label>
-                        <Field type="text" name="nationality" className="px-4 py-2 border rounded-md" />
+                        <Field as="select" name="nationality" className="px-4 py-2 border rounded-md">
+                            <option value="">Select your country</option>
+                            {countries.map((country) => (
+                                <option key={country} value={country}>
+                                    {country}
+                                </option>
+                            ))}
+                        </Field>
                         <ErrorMessage name="nationality" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
                     <div className="col-span-full">
@@ -31,11 +45,6 @@ const PersonalInfoForm = (isSubmitting) => {
                         <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">Phone</label>
                         <Field type="text" name="phone" className="px-4 py-2 border rounded-md" />
                         <ErrorMessage name="phone" component="div" className="text-red-500 text-sm mt-1" />
-                    </div>
-                    <div className="col-span-full">
-                        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" disabled={isSubmitting}>
-                            Next
-                        </button>
                     </div>
                 </div>
             </div>
