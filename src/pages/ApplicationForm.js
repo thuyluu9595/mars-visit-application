@@ -15,7 +15,10 @@ const validationSchema = [
         dateOfBirth: Yup.date().required('Date of Birth is required'),
         nationality: Yup.string().required('Nationality is required'),
         email: Yup.string().email('Invalid email format').required('Email is required'),
-        phone: Yup.string().required('Phone number is required'),
+        phone: Yup.string().matches(
+            /^\+?[1-9]\d{1,14}$/,
+            'Phone number is not valid'
+        ).required('Phone number is required'),
     }),
     Yup.object({
         departureDate: Yup.date().required('Departure Date is required'),
@@ -25,10 +28,7 @@ const validationSchema = [
     }),
     Yup.object({
         healthDeclaration: Yup.string().required('Health Declaration is required'),
-        emergencyContact: Yup.string().when('healthDeclaration', {
-            is: true,
-            then: Yup.string().required('Emergency Contact is required'),
-        }),
+        emergencyContact: Yup.string().required('Emergency Contact is required'),
         medicalConditions: Yup.string(),
     }),
 ];
@@ -65,8 +65,6 @@ export default function ApplicationForm() {
             router.push('/success'); // Redirect to success page
         } else {
             nextStep();
-            actions.setTouched({});
-            actions.setSubmitting(false);
         }
     };
 
