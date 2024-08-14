@@ -69,25 +69,31 @@ export default function ApplicationForm() {
     };
 
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema[step]}
-            onSubmit={handleSubmit}
-        >
-            {({ isSubmitting }) => (
-                <Form>
-                    <ProgressIndicator currentStage={step + 1} totalStages={validationSchema.length} />
-                    {step === 0 && <PersonalInfoForm isSubmitting={isSubmitting}/>}
-                    {step === 1 && <TravelPreferencesForm />}
-                    {step === 2 && <HealthSafetyForm />}
-                    <NavigationButtons
-                        step={step}
-                        prevStep={prevStep}
-                        isLastStep={isLastStep}
-                        isSubmitting={isSubmitting}
-                    />
-                </Form>
-            )}
-        </Formik>
+        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+            <div className="w-3/4 bg-white p-8 rounded-lg shadow-2xl">
+                <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Mars Visit Application</h1>
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema[step]}
+                    onSubmit={handleSubmit}
+                >
+                    {({isSubmitting}) => (
+                        <Form>
+                            <ProgressIndicator currentStage={step + 1} totalStages={validationSchema.length}/>
+                            {step === 0 && <PersonalInfoForm isSubmitting={isSubmitting}/>}
+                            {step === 1 && <TravelPreferencesForm/>}
+                            {step === 2 && <HealthSafetyForm/>}
+                            <NavigationButtons
+                                step={step}
+                                prevStep={prevStep}
+                                isLastStep={isLastStep}
+                                isSubmitting={isSubmitting}
+                            />
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+        </div>
+
     );
 }
