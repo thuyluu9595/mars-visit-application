@@ -1,5 +1,5 @@
 import React from 'react';
-import ApplicationForm from "@/pages/ApplicationForm"; // Import the Home component
+import ApplicationForm from "@/pages/ApplicationForm";
 
 export default function Index() {
     return <ApplicationForm />;

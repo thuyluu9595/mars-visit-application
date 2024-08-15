@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { useRouter } from 'next/router';
-import ApplicationForm from '../pages/ApplicationForm'; // Ensure this path is correct
+import ApplicationForm from '../pages/ApplicationForm';
 
 jest.mock('next/router', () => ({
     useRouter: jest.fn(),
