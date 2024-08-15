@@ -6,7 +6,7 @@ import HealthSafetyForm from '../components/forms/HealthSafetyForm';
 import NavigationButtons from '../components/NavigationButtons';
 import ProgressIndicator from '../components/ProgressIndicator';
 import { useRouter } from 'next/router';
-import { validationSchema } from '@/utils/validationSchema';
+import { validationSchema } from '../utils/validationSchema';
 
 // Initial values for the form
 const initialValues = {

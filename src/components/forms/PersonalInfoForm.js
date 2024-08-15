@@ -17,6 +17,7 @@ const PersonalInfoForm = () => {
                     <Field
                         type="text"
                         name="fullName"
+                        id="fullName"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <ErrorMessage name="fullName" component="div" className="text-red-500 text-sm mt-1" />
@@ -27,6 +28,7 @@ const PersonalInfoForm = () => {
                     <Field
                         type="date"
                         name="dateOfBirth"
+                        id="dateOfBirth"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <ErrorMessage name="dateOfBirth" component="div" className="text-red-500 text-sm mt-1" />
@@ -37,6 +39,7 @@ const PersonalInfoForm = () => {
                     <Field
                         as="select"
                         name="nationality"
+                        id="nationality"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                         <option value="">Select your country</option>
@@ -54,6 +57,7 @@ const PersonalInfoForm = () => {
                     <Field
                         type="email"
                         name="email"
+                        id="email"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
@@ -64,6 +68,7 @@ const PersonalInfoForm = () => {
                     <Field
                         type="text"
                         name="phone"
+                        id="phone"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <ErrorMessage name="phone" component="div" className="text-red-500 text-sm mt-1" />

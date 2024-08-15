@@ -10,6 +10,7 @@ const TravelPreferencesForm = () => {
                     <Field
                         type="date"
                         name="departureDate"
+                        id="departureDate"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <ErrorMessage name="departureDate" component="div" className="text-red-500 text-sm mt-1" />
@@ -20,6 +21,7 @@ const TravelPreferencesForm = () => {
                     <Field
                         type="date"
                         name="returnDate"
+                        id="returnDate"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <ErrorMessage name="returnDate" component="div" className="text-red-500 text-sm mt-1" />
@@ -30,6 +32,7 @@ const TravelPreferencesForm = () => {
                     <Field
                         as="select"
                         name="accommodation"
+                        id="accommodation"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                         <option value="">Select</option>
@@ -44,6 +47,7 @@ const TravelPreferencesForm = () => {
                     <Field
                         as="textarea"
                         name="specialRequests"
+                        id="specialRequests"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <ErrorMessage name="specialRequests" component="div" className="text-red-500 text-sm mt-1" />

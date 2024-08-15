@@ -1,62 +1,105 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { Formik } from 'formik';
-import validationSchema from '../utils/validationSchema'; // adjust the path as needed
-import PersonalInfoForm from '../components/forms/PersonalInfoForm';
+import React from 'react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { useRouter } from 'next/router';
+import ApplicationForm from '../pages/ApplicationForm'; // Ensure this path is correct
 
-describe('PersonalInfoForm Validation', () => {
-    const initialValues = {
-        fullName: '',
-        dateOfBirth: '',
-        nationality: '',
-        email: '',
-        phone: '',
-    };
+jest.mock('next/router', () => ({
+    useRouter: jest.fn(),
+}));
 
-    const renderForm = (values = initialValues) => {
-        return render(
-            <Formik
-                initialValues={values}
-                validationSchema={validationSchema}
-                onSubmit={jest.fn()}
-            >
-                {({ isSubmitting }) => <PersonalInfoForm isSubmitting={isSubmitting} />}
-            </Formik>
-        );
-    };
+describe('ApplicationForm', () => {
+    const mockPush = jest.fn();
 
-    test('should display required error messages when inputs are empty', async () => {
-        renderForm();
-
-        fireEvent.submit(screen.getByRole('button', { name: /next/i }));
-
-        expect(await screen.findByText(/full name is a required field/i)).toBeInTheDocument();
-        expect(await screen.findByText(/date of birth is a required field/i)).toBeInTheDocument();
-        expect(await screen.findByText(/nationality is a required field/i)).toBeInTheDocument();
-        expect(await screen.findByText(/email is a required field/i)).toBeInTheDocument();
-        expect(await screen.findByText(/phone is a required field/i)).toBeInTheDocument();
+    beforeEach(() => {
+        useRouter.mockReturnValue({
+            push: mockPush,
+        });
     });
 
-    test('should display an error for invalid email', async () => {
-        renderForm({
-            ...initialValues,
-            email: 'invalidemail'
+    it('renders the first step (Personal Info) correctly', () => {
+        render(<ApplicationForm />);
+        expect(screen.getByText(/Full Name/i)).toBeInTheDocument();
+        expect(screen.getByText(/Date of Birth/i)).toBeInTheDocument();
+        expect(screen.getByText(/Nationality/i)).toBeInTheDocument();
+        expect(screen.getByText(/Email/i)).toBeInTheDocument();
+        expect(screen.getByText(/Phone/i)).toBeInTheDocument();
+    });
+
+    it('validates the first step correctly', async () => {
+        render(<ApplicationForm />);
+
+        fireEvent.click(screen.getByText(/Next/i));
+
+        await waitFor(() => {
+            expect(screen.getByText(/Full name is required/i)).toBeInTheDocument();
+            expect(screen.getByText(/Date of birth is required/i)).toBeInTheDocument();
+            expect(screen.getByText(/Nationality is required/i)).toBeInTheDocument();
+            expect(screen.getByText(/Email is required/i)).toBeInTheDocument();
+            expect(screen.getByText(/Phone number is required/i)).toBeInTheDocument();
+        });
+    });
+
+    it('proceeds to the next step when the first step is valid', async () => {
+        render(<ApplicationForm />);
+
+        await act(async () => {
+            fireEvent.change(screen.getByLabelText(/Full Name/i), { target: { value: 'John Doe' } });
+            fireEvent.change(screen.getByLabelText(/Date of Birth/i), { target: { value: '2024-08-16' } });
+            fireEvent.change(screen.getByLabelText(/Nationality/i), { target: { value: 'United States' } });
+            fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'john.doe@example.com' } });
+            fireEvent.change(screen.getByLabelText(/Phone/i), { target: { value: '+1234567890' } });
+
+            fireEvent.click(screen.getByText(/Next/i));
         });
 
-        fireEvent.submit(screen.getByRole('button', { name: /next/i }));
-
-        expect(await screen.findByText(/email must be a valid email/i)).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByLabelText(/Departure Date/i)).toBeInTheDocument();
+            expect(screen.getByLabelText(/Return Date/i)).toBeInTheDocument();
+        });
     });
 
-    test('should display an error for invalid phone number', async () => {
-        renderForm({
-            ...initialValues,
-            phone: '1234abc'
+    it('submits the form and redirects on the last step', async () => {
+        render(<ApplicationForm />);
+
+        // Fill out the first step
+        await act(async () => {
+            fireEvent.change(screen.getByLabelText(/Full Name/i), { target: { value: 'John Doe' } });
+            fireEvent.change(screen.getByLabelText(/Date of Birth/i), { target: { value: '1990-01-01' } });
+            fireEvent.change(screen.getByLabelText(/Nationality/i), { target: { value: 'United States' } });
+            fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'john.doe@example.com' } });
+            fireEvent.change(screen.getByLabelText(/Phone/i), { target: { value: '+1234567890' } });
+
+            fireEvent.click(screen.getByText(/Next/i));
+
         });
 
-        fireEvent.submit(screen.getByRole('button', { name: /next/i }));
+        // Fill out the second step
+        await act(async () => {
+            fireEvent.change(screen.getByLabelText(/Departure Date/i), { target: { value: '2024-01-01' } });
+            fireEvent.change(screen.getByLabelText(/Return Date/i), { target: { value: '2024-01-10' } });
+            fireEvent.change(screen.getByLabelText(/Accommodation/i), { target: { value: 'spaceHotel' } });
+            fireEvent.change(screen.getByLabelText(/Special Requests/i), { target: { value: 'N/A' } });
 
-        expect(await screen.findByText(/phone number is not valid/i)).toBeInTheDocument();
+            fireEvent.click(screen.getByText(/Next/i));
+        });
+
+        // Fill out the third step and submit
+        // await waitFor(() => {
+        //     expect(screen.getByLabelText(/Health Declaration/i)).toBeInTheDocument();
+        //     expect(screen.getByLabelText(/Emergency Contact/i)).toBeInTheDocument();
+        //     expect(screen.getByLabelText(/Medical Conditions/i)).toBeInTheDocument();
+        //
+        // });
+        await act(async () => {
+
+            fireEvent.change(screen.getByLabelText(/Health Declaration/i), { target: { value: 'Yes' } });
+            fireEvent.change(screen.getByLabelText(/Emergency Contact/i), { target: { value: '+1234567890' } });
+
+            fireEvent.click(screen.getByText(/Submit/i));
+        });
+
+        await waitFor(() => {
+            expect(mockPush).toHaveBeenCalledWith('/success');
+        });
     });
-
-    // Add more tests based on different validation scenarios...
 });

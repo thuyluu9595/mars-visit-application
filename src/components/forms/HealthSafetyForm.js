@@ -10,6 +10,7 @@ const HealthSafetyForm = () => {
                     <Field
                         as="select"
                         name="healthDeclaration"
+                        id="healthDeclaration"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                         <option value="">Select</option>
@@ -24,6 +25,7 @@ const HealthSafetyForm = () => {
                     <Field
                         type="text"
                         name="emergencyContact"
+                        id="emergencyContact"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <ErrorMessage name="emergencyContact" component="div" className="text-red-500 text-sm mt-1" />
@@ -34,6 +36,7 @@ const HealthSafetyForm = () => {
                     <Field
                         as="textarea"
                         name="medicalConditions"
+                        id="medicalConditions"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <ErrorMessage name="medicalConditions" component="div" className="text-red-500 text-sm mt-1" />
