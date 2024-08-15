@@ -8,9 +8,9 @@ const countries = [
     "Norway", "New Zealand", "Argentina", "Chile", "South Korea", "Nigeria"
 ];
 
-const PersonalInfoForm = ({ isSubmitting }) => {
+const PersonalInfoForm = () => {
     return (
-        <div className="space-y-8 bg-white p-6 rounded-lg shadow-md">
+        <div className="space-y-8 bg-white p-6">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                     <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">Full Name</label>

@@ -3,7 +3,7 @@ import { Field, ErrorMessage } from 'formik';
 
 const TravelPreferencesForm = () => {
     return (
-        <div className="space-y-8 bg-white p-6 rounded-lg shadow-md">
+        <div className="space-y-8 bg-white p-6 ">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div className="sm:col-span-1">
                     <label htmlFor="departureDate" className="block text-sm font-medium text-gray-700">Departure Date</label>
