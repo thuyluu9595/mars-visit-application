@@ -44,7 +44,7 @@ describe('ApplicationForm', () => {
 
         await act(async () => {
             fireEvent.change(screen.getByLabelText(/Full Name/i), { target: { value: 'John Doe' } });
-            fireEvent.change(screen.getByLabelText(/Date of Birth/i), { target: { value: '2024-08-16' } });
+            fireEvent.change(screen.getByLabelText(/Date of Birth/i), { target: { value: '2020-08-16' } });
             fireEvent.change(screen.getByLabelText(/Nationality/i), { target: { value: 'United States' } });
             fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'john.doe@example.com' } });
             fireEvent.change(screen.getByLabelText(/Phone/i), { target: { value: '+1234567890' } });
@@ -56,6 +56,41 @@ describe('ApplicationForm', () => {
             expect(screen.getByLabelText(/Departure Date/i)).toBeInTheDocument();
             expect(screen.getByLabelText(/Return Date/i)).toBeInTheDocument();
         });
+    });
+
+    it('render the third step correctly', async () => {
+        render(<ApplicationForm />);
+
+        // Fill out the first step
+        await act(async () => {
+            fireEvent.change(screen.getByLabelText(/Full Name/i), { target: { value: 'John Doe' } });
+            fireEvent.change(screen.getByLabelText(/Date of Birth/i), { target: { value: '1990-01-01' } });
+            fireEvent.change(screen.getByLabelText(/Nationality/i), { target: { value: 'United States' } });
+            fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'john.doe@example.com' } });
+            fireEvent.change(screen.getByLabelText(/Phone/i), { target: { value: '+1234567890' } });
+
+            fireEvent.click(screen.getByText(/Next/i));
+
+        });
+
+        // Fill out the second step
+        await act(async () => {
+            fireEvent.change(screen.getByLabelText(/Departure Date/i), { target: { value: '2024-12-01' } });
+            fireEvent.change(screen.getByLabelText(/Return Date/i), { target: { value: '2024-12-10' } });
+            fireEvent.change(screen.getByLabelText(/Accommodation/i), { target: { value: 'spaceHotel' } });
+            fireEvent.change(screen.getByLabelText(/Special Requests/i), { target: { value: 'N/A' } });
+
+            fireEvent.click(screen.getByText(/Next/i));
+        });
+
+        // Check for existing fields
+        await waitFor(() => {
+            expect(screen.getByLabelText(/Health Declaration/i)).toBeInTheDocument();
+            expect(screen.getByLabelText(/Emergency Contact/i)).toBeInTheDocument();
+            expect(screen.getByLabelText(/Medical Conditions/i)).toBeInTheDocument();
+
+        });
+
     });
 
     it('submits the form and redirects on the last step', async () => {
@@ -75,24 +110,17 @@ describe('ApplicationForm', () => {
 
         // Fill out the second step
         await act(async () => {
-            fireEvent.change(screen.getByLabelText(/Departure Date/i), { target: { value: '2024-01-01' } });
-            fireEvent.change(screen.getByLabelText(/Return Date/i), { target: { value: '2024-01-10' } });
+            fireEvent.change(screen.getByLabelText(/Departure Date/i), { target: { value: '2024-12-01' } });
+            fireEvent.change(screen.getByLabelText(/Return Date/i), { target: { value: '2024-12-10' } });
             fireEvent.change(screen.getByLabelText(/Accommodation/i), { target: { value: 'spaceHotel' } });
             fireEvent.change(screen.getByLabelText(/Special Requests/i), { target: { value: 'N/A' } });
 
             fireEvent.click(screen.getByText(/Next/i));
         });
 
-        // Fill out the third step and submit
-        // await waitFor(() => {
-        //     expect(screen.getByLabelText(/Health Declaration/i)).toBeInTheDocument();
-        //     expect(screen.getByLabelText(/Emergency Contact/i)).toBeInTheDocument();
-        //     expect(screen.getByLabelText(/Medical Conditions/i)).toBeInTheDocument();
-        //
-        // });
         await act(async () => {
 
-            fireEvent.change(screen.getByLabelText(/Health Declaration/i), { target: { value: 'Yes' } });
+            fireEvent.change(screen.getByLabelText(/Health Declaration/i), { target: { value: 'true' } });
             fireEvent.change(screen.getByLabelText(/Emergency Contact/i), { target: { value: '+1234567890' } });
 
             fireEvent.click(screen.getByText(/Submit/i));
