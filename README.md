@@ -4,11 +4,11 @@ Welcome to the Mars Visit Application! This project is a multi-step form built u
 
 ## Features
 
-- Multi-step form with validation
-- Responsive design using Tailwind CSS
-- Form validation using Yup
-- Unit tests with Jest and React Testing Library
-- Deployed on Vercel
+- Multi-step form with validation.
+- Responsive design using Tailwind CSS.
+- Form validation using Yup.
+- Unit tests with Jest and React Testing Library.
+- Deployed on Vercel.
 
 ## Technologies Used
 
